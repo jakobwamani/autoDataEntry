@@ -15,6 +15,8 @@ from selenium.webdriver.common.action_chains import ActionChains
 #date
 from datetime import datetime
 from datetime import date    
+import xlrd
+import os
 
 browser = webdriver.Firefox()
 #the browser waits for 5 seconds
@@ -56,7 +58,8 @@ sleep(10)
 
 #Now select he HVAT 
 # select_hvat = browser.find_element_by_css_selector("li.asset-row:nth-child(3) > div:nth-child(1) > a:nth-child(1)")
-select_hvat = browser.find_element_by_xpath("/html/body/div/div[2]/div[2]/div/div/div[1]/ul/li[2]/div[1]")
+select_hvat = browser.find_element_by_xpath("/html/body/div/div[2]/div[2]/div/div/div[1]/ul/li[1]/div[1]/a")
+# select_hvat = browser.find_element_by_xpath("/html/body/div/div[2]/div[2]/div/div/div[1]/ul/li[2]/div[1]")
 # select_hvat = browser.find_elements_by_xpath("//*[contains(text(), 'ICYD Household Vulnerability Assessment Tool (HVAT) [OVCMIS FORM 007A')]").click()
 select_hvat.click()
 
@@ -91,7 +94,7 @@ fill_in_url = browser.current_url
 print(fill_in_url)
 browser.get(fill_in_url)
 
-sleep(10)
+sleep(15)
 #First refresh the page
 browser.refresh()
 #after getting the url then , i can now input the date
@@ -134,10 +137,20 @@ select_kyenjojo.click()
 sleep(2)
 select_kyenjojo_town_council = browser.find_element_by_xpath('/html/body/div[1]/article/form/section[2]/fieldset[4]/fieldset/div/label[9]/span')
 select_kyenjojo_town_council.click()
+sleep(2)
+
 
 #I have skipped some things but ,i will come to them later
+
+#Now fill in that para social shit too
+assessor_title_input = browser.find_element_by_xpath('/html/body/div[1]/article/form/section[9]/label[4]/input')
+#move to view
+assessor_title_input.location_once_scrolled_into_view
+assessor_title = 'PARA-SOCIAL-WORKER'
+assessor_title_input.send_keys(assessor_title)
 #Now let me input the community development Officer
 sleep(2)
+
 select_cdo = browser.find_element_by_xpath('/html/body/div[1]/article/form/section[2]/section[3]/section/label[2]/input')
 #input the name of cdo
 cdo = 'KABAITIRA NAUME'
@@ -153,5 +166,96 @@ cdo_phone_number.location_once_scrolled_into_view
 cdo_tele = 783323854
 #input the number
 cdo_phone_number.send_keys(cdo_tele)
+sleep(2)
 
+#select that the cdo own the phone number
+self_owned_cdo_tele = browser.find_element_by_xpath('/html/body/div[1]/article/form/section[2]/section[3]/section/fieldset/fieldset/div/label[1]')
+self_owned_cdo_tele.click()
+sleep(2)
 
+#i have skipped some things again
+#this is now the supervisor part down below
+supervisor_name = browser.find_element_by_xpath('/html/body/div[1]/article/form/section[10]/label[2]/input')
+#scroll_down
+supervisor_name.location_once_scrolled_into_view
+supervisor_full_names = 'KABAITIRA NAUME'
+#input the name
+supervisor_name.send_keys(supervisor_full_names)
+sleep(2)
+
+#supervisor tele
+supervisor_tele = browser.find_element_by_xpath('/html/body/div[1]/article/form/section[10]/label[3]/input')
+#screw to view
+supervisor_tele.location_once_scrolled_into_view
+supervisor_tele_number = 783323854
+supervisor_tele.send_keys(supervisor_tele_number)
+sleep(2)
+
+#include the supervisor title
+supervisor_title_input = browser.find_element_by_xpath('/html/body/div[1]/article/form/section[10]/label[4]/input')
+#move to view
+supervisor_title_input.location_once_scrolled_into_view
+supervisor_title = 'SUPERVISOR'
+supervisor_title_input.send_keys(supervisor_title)
+sleep(2)
+
+#include DPC name
+dpc_name_input = browser.find_element_by_xpath('/html/body/div[1]/article/form/section[11]/label[2]/input')
+#move to view
+dpc_name_input.location_once_scrolled_into_view
+dpc_name = 'AGABA PHIONA'
+dpc_name_input.send_keys(dpc_name)
+sleep(2)
+
+#include the DPC number 
+dpc_number_input = browser.find_element_by_xpath('/html/body/div[1]/article/form/section[11]/label[3]/input')
+#move to view
+dpc_number_input.location_once_scrolled_into_view
+dpc_number = 782758476
+dpc_number_input.send_keys(dpc_number)
+sleep(2)
+
+#give the title
+dpc_title_input = browser.find_element_by_xpath('/html/body/div[1]/article/form/section[11]/label[4]/input')
+#move to view
+dpc_title_input.location_once_scrolled_into_view
+dpc_title = 'DPC'
+dpc_title_input.send_keys(dpc_title)
+
+#now select name of data entrant
+select_data_entrant = browser.find_element_by_xpath('/html/body/div[1]/article/form/section[11]/label[5]/div/button/span[1]')
+sleep(2)
+select_data_entrant.click()
+
+#move to raymond
+select_raymond = browser.find_element_by_xpath('/html/body/div[1]/article/form/section[11]/label[5]/div/ul/li[11]/a/label/span')
+#move to view
+select_raymond.location_once_scrolled_into_view
+#then click it
+select_raymond.click()
+sleep(2)
+
+#get the data from the excel sheet
+df = pd.read_excel('tabulardata.xls', index_col=0)
+#come to 1.1 Who pays for most of the HH expenses?
+#access the answer
+print(df)
+parishe = df['parish'].values[0]
+
+#get to the parish
+parish_input = browser.find_element_by_xpath('/html/body/div[1]/article/form/section[2]/label[3]/input')
+#move to view
+parish_input.location_once_scrolled_into_view
+#input the parish
+parish_input.send_keys(parishe)
+
+#now we start to fill in the form
+#1.1 Who pays for most of the HH expenses?*
+# pull the value from the sheet 
+# compare it 
+
+hhspender = df['1.1'].values[0]
+
+child = browser.find_element_by_xpath('/html/body/div[1]/article/form/section[4]/fieldset[1]/fieldset/div/label[1]')
+grand_parent = browser.find_element_by_xpath('/html/body/div[1]/article/form/section[4]/fieldset[1]/fieldset/div/label[2]')
+other_relative = browser.find_element_by_xpath('/html/body/div[1]/article/form/section[4]/fieldset[1]/fieldset/div/label[3]')
