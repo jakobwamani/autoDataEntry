@@ -95,6 +95,7 @@ browser.switch_to.window(fill_in_form_url)
 #get the url
 fill_in_url = browser.current_url
 print(fill_in_url)
+sleep(3)
 browser.get(fill_in_url)
 
 sleep(15)
@@ -609,7 +610,7 @@ land_in_str = str(land)
 if(land_in_str == '1'):
     has_land = browser.find_element_by_xpath('/html/body/div[1]/article/form/section[4]/section[1]/fieldset[7]/fieldset/div/label[1]')
     has_land.location_once_scrolled_into_view
-    has.click()
+    has_land.click()
 else:
     no_land = browser.find_element_by_xpath('/html/body/div[1]/article/form/section[4]/section[1]/fieldset[7]/fieldset/div/label[2]')
     no_land.location_once_scrolled_into_view
@@ -814,7 +815,7 @@ if(rainwater_in_str == '1'):
 else:
     rainwater_no = browser.find_element_by_xpath('/html/body/div[1]/article/form/section[5]/section[2]/fieldset[1]/fieldset/div/label[2]')
     rainwater_no.location_once_scrolled_into_view
-    rainwater.click()
+    rainwater_no.click()
 
 sleep(1)
 
@@ -1521,6 +1522,6 @@ wb = openpyxl.load_workbook(filename=filename)
 sheet = wb['Sheet1']
 new_row = df.head(1)
 
-sheet.append(new_row.tolist())
+sheet.append(new_row.values.tolist())
 wb.save(filename)
 
