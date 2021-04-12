@@ -28,7 +28,13 @@ browser.get('https://kobo.humanitarianresponse.info/')
 
 #after we sleep for 2 seconds
 sleep(1)
+browser.refresh()
 
+sleep(2)
+
+browser.refresh()
+
+sleep(2)
 username_input = browser.find_element_by_css_selector('#id_username')
 
 password_input = browser.find_element_by_css_selector("#id_password")
@@ -61,8 +67,8 @@ df = pd.read_excel('tabulardata.xls', index_col=0)
 
 #Now select he HVAT 
 # select_hvat = browser.find_element_by_css_selector("li.asset-row:nth-child(3) > div:nth-child(1) > a:nth-child(1)")
-select_hvat = browser.find_element_by_xpath("/html/body/div/div[2]/div[2]/div/div/div[1]/ul/li[1]/div[1]/a")
-# select_hvat = browser.find_element_by_xpath("/html/body/div/div[2]/div[2]/div/div/div[1]/ul/li[2]/div[1]")
+# select_hvat = browser.find_element_by_xpath("/html/body/div/div[2]/div[2]/div/div/div[1]/ul/li[1]/div[1]/a")
+select_hvat = browser.find_element_by_xpath("/html/body/div/div[2]/div[2]/div/div/div[1]/ul/li[2]/div[1]")
 # select_hvat = browser.find_elements_by_xpath("//*[contains(text(), 'ICYD Household Vulnerability Assessment Tool (HVAT) [OVCMIS FORM 007A')]").click()
 select_hvat.click()
 
@@ -86,10 +92,11 @@ sleep(1)
 
 click_open_button = browser.find_element_by_css_selector(".collect-link")
 click_open_button.click()
-sleep(1)
+sleep(4)
 
 #now must selenium to the nxt window tab
 fill_in_form_url = browser.window_handles[1]
+sleep(1)
 browser.switch_to.window(fill_in_form_url)
 
 #get the url
@@ -100,7 +107,7 @@ browser.get(fill_in_url)
 
 sleep(15)
 #First refresh the page
-browser.refresh()
+# browser.refresh()
 #after getting the url then , i can now input the date
 sleep(3)
 # /html/body/div[1]/article/form/section[2]/label[1]/div/input
